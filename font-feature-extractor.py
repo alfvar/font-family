@@ -10,6 +10,9 @@ scale_factor = 2
 font_dir = "fonts/"
 output_dir = "output/"
 
+# Create the output directory if it doesn't exist
+os.makedirs(output_dir, exist_ok=True)
+
 
 # Get font metadata
 def extract_font_metadata(font_path):
@@ -74,4 +77,5 @@ for filename in os.listdir(font_dir):
             draw.text((draw_x, draw_y), chr(i), (0, 0, 0), font=font)
 
         filename_base, ext = os.path.splitext(font_path)
-        img.save(f"{filename_base}_{font_style_head}.png")
+        output_filename = os.path.join(output_dir, f"{font_metadata['name'].replace(' ', '_')}_{font_metadata['style-head'].replace(' ', '_')}.png")
+        img.save(output_filename)
