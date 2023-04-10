@@ -1,5 +1,8 @@
 import os
 from fontTools.ttLib import TTFont
+import json
+
+
 from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
@@ -56,6 +59,12 @@ for root, dirs, files in os.walk(font_dir):
 
         print(font_metadata)
 
+        # Save metadata as JSON
+        metadata_filename = os.path.join(output_dir, f"{font_metadata['name'].replace(' ', '_')}_{font_metadata['style-head'].replace(' ', '_')}.json")
+        with open(metadata_filename, 'w') as f:
+            json.dump(font_metadata, f)
+
+
         # Load the font file for visual rendering
         font = ImageFont.truetype(font_path, font_size * scale_factor)
 
@@ -69,7 +78,7 @@ for root, dirs, files in os.walk(font_dir):
         image_width = cell_width * grid_size + margin * (grid_size + 1)
         image_height = cell_height * grid_size + margin * (grid_size + 1)
 
-        img = Image.new("RGBA", (image_width, image_height), (255, 255, 255))
+        img = Image.new("L", (image_width, image_height), 255)
         draw = ImageDraw.Draw(img)
 
         for i in range(35, num_characters):
@@ -85,7 +94,7 @@ for root, dirs, files in os.walk(font_dir):
             offset_x = (cell_width - (right - left) * scale_factor) // 2
             offset_y = (cell_height - (bottom - top) * scale_factor) // 2
 
-            draw.text((draw_x + offset_x, draw_y + offset_y), chr(i), (0, 0, 0), font=font)
+            draw.text((draw_x + offset_x, draw_y + offset_y), chr(i), (0), font=font)
 
         filename_base, ext = os.path.splitext(font_path)
         output_filename = os.path.join(output_dir, f"{font_metadata['name'].replace(' ', '_')}_{font_metadata['style-head'].replace(' ', '_')}.png")
