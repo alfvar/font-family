@@ -6,9 +6,11 @@ from PIL import ImageDraw
 
 # Set the font size and scale factor
 font_size = 64
-scale_factor = 2
+scale_factor = 1
 font_dir = "fonts/"
 output_dir = "output/"
+shift_offset = 8 * scale_factor
+
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
@@ -42,10 +44,11 @@ def extract_font_metadata(font_path):
     }
     return font_metadata
 
-# Loop through all font files in the directory
-for filename in os.listdir(font_dir):
-    if filename.endswith(".ttf") or filename.endswith(".otf"):
-        font_path = os.path.join(font_dir, filename)
+# Loop through all font files in the directory and its subdirectories
+for root, dirs, files in os.walk(font_dir):
+    for filename in files:
+        if filename.endswith(".ttf") or filename.endswith(".otf"):
+            font_path = os.path.join(root, filename)
 
         # Extract font metadata
         font_metadata = extract_font_metadata(font_path)
@@ -56,11 +59,11 @@ for filename in os.listdir(font_dir):
         # Load the font file for visual rendering
         font = ImageFont.truetype(font_path, font_size * scale_factor)
 
-        num_characters = 256
-        grid_size = 16
+        num_characters = 128
+        grid_size = 12
 
-        left, top, right, bottom = font.getbbox("A")  # Assumes all glyphs have similar size
-        cell_width, cell_height = (right - left) * scale_factor, (bottom - top) * scale_factor
+        # Define fixed cell size
+        cell_width, cell_height = 96 * scale_factor, 96 * scale_factor
         margin = 8 * scale_factor
 
         image_width = cell_width * grid_size + margin * (grid_size + 1)
@@ -72,9 +75,17 @@ for filename in os.listdir(font_dir):
         for i in range(num_characters):
             x = i % grid_size
             y = i // grid_size
-            draw_x = margin + x * (cell_width + margin)
+            draw_x = margin + shift_offset + x * (cell_width + margin)
             draw_y = margin + y * (cell_height + margin)
-            draw.text((draw_x, draw_y), chr(i), (0, 0, 0), font=font)
+
+            # Get the glyph bounding box
+            left, top, right, bottom = font.getbbox(chr(i))
+
+            # Calculate the centering offsets
+            offset_x = (cell_width - (right - left) * scale_factor) // 2
+            offset_y = (cell_height - (bottom - top) * scale_factor) // 2
+
+            draw.text((draw_x + offset_x, draw_y + offset_y), chr(i), (0, 0, 0), font=font)
 
         filename_base, ext = os.path.splitext(font_path)
         output_filename = os.path.join(output_dir, f"{font_metadata['name'].replace(' ', '_')}_{font_metadata['style-head'].replace(' ', '_')}.png")
