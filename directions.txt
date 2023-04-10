@@ -1,0 +1,5 @@
+1. Place fonts in the fonts folder.
+
+2. Run font-to-bitmap.py and font-metadata.py
+
+3. Profit
