@@ -60,7 +60,7 @@ for root, dirs, files in os.walk(font_dir):
         font = ImageFont.truetype(font_path, font_size * scale_factor)
 
         num_characters = 128
-        grid_size = 12
+        grid_size = 10
 
         # Define fixed cell size
         cell_width, cell_height = 96 * scale_factor, 96 * scale_factor
@@ -72,9 +72,9 @@ for root, dirs, files in os.walk(font_dir):
         img = Image.new("RGBA", (image_width, image_height), (255, 255, 255))
         draw = ImageDraw.Draw(img)
 
-        for i in range(num_characters):
-            x = i % grid_size
-            y = i // grid_size
+        for i in range(35, num_characters):
+            x = (i - 35) % grid_size  # Subtract the offset (35) from i
+            y = (i - 35) // grid_size  # Subtract the offset (35) from i
             draw_x = margin + shift_offset + x * (cell_width + margin)
             draw_y = margin + y * (cell_height + margin)
 
