@@ -5,3 +5,4 @@ cuda-wsl-ubuntu.pin
 cluster_labels.npy
 images.pt
 features.npy
+cluster_visualization.png

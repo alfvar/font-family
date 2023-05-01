@@ -8,9 +8,11 @@ A tool that clusters fonts together based on their visual similarity.
 
 3. Run `similarity-calculator.py`.
 
-4. ???
+4. Run `cluster_visualizer.py`.
 
-5. Profit.
+5. ???
+
+6. Profit.
 
 ## To do:
 * Cluster based on a better algorithm
