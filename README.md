@@ -6,7 +6,7 @@ A tool that clusters fonts together based on their visual similarity.
 
 2. Run `font-to-img-metadata.py`. This extracts metadata and a sheet of glyphs into the `output` folder.
 
-3. Run `extract-features.py` This assigns each font to one of 5 clusters, and for now they are displayed visually in a folder called `collage`. 
+3. Run `similarity-calculator.py`.
 
 4. ???
 

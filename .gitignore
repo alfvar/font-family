@@ -1,3 +1,7 @@
 fonts/*
 venv
 collage
+cuda-wsl-ubuntu.pin
+cluster_labels.npy
+images.pt
+features.npy

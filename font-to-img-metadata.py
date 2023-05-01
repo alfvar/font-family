@@ -11,7 +11,7 @@ from PIL import ImageDraw
 font_size = 64
 scale_factor = 1
 font_dir = "fonts/"
-output_dir = "output/"
+output_dir = "font-data/"
 shift_offset = 8 * scale_factor
 
 
