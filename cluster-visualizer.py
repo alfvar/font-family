@@ -30,7 +30,7 @@ for filename, (x, y), label in zip(filenames, features_2d, labels):
     img = Image.open(os.path.join("font-data", filename))
     width, height = img.size
     glyph = img.crop((3*width//10, 3*height//10, 4*width//10, 4*height//10))  # Extract a part of the image
-    glyph.thumbnail((20, 20), Image.ANTIALIAS)  # Resize the glyph to a smaller size
+    im = glyph.resize((20 * 2, 20 * 2), resample=Image.LANCZOS)
 
     # Convert the PIL Image to a numpy array
     img_array = np.array(glyph)
